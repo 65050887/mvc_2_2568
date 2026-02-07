@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Rumours</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Rumour Tracking</h1>
+          <p>ระบบติดตามข่าวลือ (MVC - JS)</p>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="pill" href="/rumours">รายการข่าวลือ</a>
+        <a class="pill" href="/rumours/create">เพิ่มข่าวลือ</a>
+        <a class="pill" href="/summary">สรุปผล</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd">
+        <div>
+          <h2>ข่าวลือทั้งหมด</h2>
+          <div class="sub">เรียงตามจำนวนรายงาน (มาก → น้อย)</div>
+        </div>
+        <form method="GET" action="/rumours" class="actions">
+          <input class="field" style="min-width:260px;" name="q" placeholder="ค้นหา code/title/source" value="<%= q %>"/>
+          <button class="btn primary" type="submit">ค้นหา</button>
+        </form>
+      </div>
+
+      <div class="card-bd">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Title</th>
+                <th>Source</th>
+                <th>Credibility</th>
+                <th>Reports</th>
+                <th>Status</th>
+                <th>Verified</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% rumours.forEach(r => { %>
+                <tr>
+                  <td><%= r.rumour_code %></td>
+                  <td style="font-weight:700;"><%= r.title %></td>
+                  <td style="color:var(--muted)"><%= r.source %></td>
+                  <td><span class="badge"><%= r.credibility_score %>/100</span></td>
+                  <td><span class="badge"><%= r.report_count %></span></td>
+                  <td>
+                    <span class="badge <%= r.status %>"><%= r.status %></span>
+                  </td>
+                  <td>
+                    <span class="badge <%= r.verified_status %>"><%= r.verified_status %></span>
+                  </td>
+                  <td><a class="btn" href="/rumours/<%= r.id %>">ดูรายละเอียด</a></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="footer-note">
+          * ทิป: ข่าวที่มีจำนวนรายงานมากกว่าเกณฑ์ จะถูกเปลี่ยนเป็น <b>PANIC</b> อัตโนมัติ
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

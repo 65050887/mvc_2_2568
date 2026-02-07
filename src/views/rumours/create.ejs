@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Create Rumour</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Create Rumour</h1>
+          <p>เพิ่มข่าวลือใหม่</p>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="pill" href="/rumours">รายการข่าวลือ</a>
+        <a class="pill" href="/summary">สรุปผล</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd">
+        <div>
+          <h2>เพิ่มข่าวลือ</h2>
+          <div class="sub">Code ต้องเป็นตัวเลข 8 หลัก และห้ามขึ้นต้นด้วย 0</div>
+        </div>
+      </div>
+      <div class="card-bd">
+        <% if (error) { %>
+          <div class="alert err"><b>ผิดพลาด:</b> <%= error %></div>
+        <% } %>
+
+        <form method="POST" action="/rumours/create" class="grid">
+          <div class="field col-6">
+            <label>Rumour Code</label>
+            <input name="rumour_code" maxlength="8" placeholder="12345678" required />
+          </div>
+
+          <div class="field col-6">
+            <label>Credibility Score (0-100)</label>
+            <input name="credibility_score" type="number" min="0" max="100" placeholder="35" required />
+          </div>
+
+          <div class="field col-12">
+            <label>Title</label>
+            <input name="title" placeholder="หัวข้อข่าวลือ" required />
+          </div>
+
+          <div class="field col-12">
+            <label>Source</label>
+            <input name="source" placeholder="Facebook / LINE / ..." required />
+          </div>
+
+          <div class="col-12 actions">
+            <button class="btn primary" type="submit">บันทึก</button>
+            <a class="btn" href="/rumours">ยกเลิก</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

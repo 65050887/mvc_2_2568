@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Rumour Detail</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Rumour Detail</h1>
+          <p>รายละเอียด + รายงาน + ตรวจสอบ</p>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="pill" href="/rumours">รายการข่าวลือ</a>
+        <a class="pill" href="/summary">สรุปผล</a>
+      </div>
+    </div>
+
+    <% if (message) { %>
+      <div class="alert ok"><b>สำเร็จ:</b> <%= message %></div>
+    <% } %>
+    <% if (error) { %>
+      <div class="alert err"><b>ผิดพลาด:</b> <%= error %></div>
+    <% } %>
+
+    <div class="card">
+      <div class="card-hd">
+        <div>
+          <h2><%= rumour.title %></h2>
+          <div class="sub">Code: <b><%= rumour.rumour_code %></b> • Source: <b><%= rumour.source %></b></div>
+        </div>
+        <div class="actions">
+          <span class="badge"><%= rumour.credibility_score %>/100</span>
+          <span class="badge <%= rumour.status %>"><%= rumour.status %></span>
+          <span class="badge <%= rumour.verified_status %>"><%= rumour.verified_status %></span>
+        </div>
+      </div>
+
+      <div class="card-bd">
+        <div class="grid">
+          <div class="col-12">
+            <div class="kv">
+              <div class="k">Report Count</div>
+              <div class="v"><%= reportCount %> (panic เมื่อมากกว่า <%= panicThreshold %>)</div>
+
+              <div class="k">Status</div>
+              <div class="v"><%= rumour.status %></div>
+
+              <div class="k">Verified</div>
+              <div class="v"><%= rumour.verified_status %></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="grid">
+          <div class="col-6">
+            <h3 style="margin:0 0 10px;">รายงานข่าวลือ (Report)</h3>
+
+            <% if (rumour.verified_status !== "unknown") { %>
+              <div class="alert err">ข่าวลือนี้ถูกตรวจสอบแล้ว จึงไม่สามารถรายงานเพิ่มได้</div>
+            <% } else { %>
+              <form method="POST" action="/rumours/<%= rumour.id %>/reports" class="grid">
+                <div class="field col-12">
+                  <label>User (general)</label>
+                  <select name="user_id" required>
+                    <% users.filter(u => u.role === "general").forEach(u => { %>
+                      <option value="<%= u.id %>"><%= u.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+
+                <div class="field col-12">
+                  <label>Report Type</label>
+                  <select name="report_type" required>
+                    <option value="distorted">distorted</option>
+                    <option value="incite">incite</option>
+                    <option value="fake">fake</option>
+                  </select>
+                </div>
+
+                <div class="col-12 actions">
+                  <button class="btn primary" type="submit">ส่งรายงาน</button>
+                </div>
+              </form>
+            <% } %>
+          </div>
+
+          <div class="col-6">
+            <h3 style="margin:0 0 10px;">ตรวจสอบข่าวลือ (Verifier)</h3>
+
+            <% if (rumour.verified_status !== "unknown") { %>
+              <div class="alert ok">ข่าวลือนี้ถูกตรวจสอบแล้ว: <b><%= rumour.verified_status %></b></div>
+            <% } else { %>
+              <form method="POST" action="/rumours/<%= rumour.id %>/verify" class="grid">
+                <div class="field col-12">
+                  <label>Verifier user</label>
+                  <select name="verifier_user_id" required>
+                    <% users.filter(u => u.role === "verifier").forEach(v => { %>
+                      <option value="<%= v.id %>"><%= v.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+
+                <div class="field col-12">
+                  <label>Result</label>
+                  <select name="verified_status" required>
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                  </select>
+                </div>
+
+                <div class="col-12 actions">
+                  <button class="btn primary" type="submit">ยืนยัน</button>
+                </div>
+              </form>
+            <% } %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

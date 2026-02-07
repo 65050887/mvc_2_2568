@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Summary</h1>
+          <p>สรุปข่าว PANIC และผลการตรวจสอบ</p>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="pill" href="/rumours">รายการข่าวลือ</a>
+        <a class="pill" href="/rumours/create">เพิ่มข่าวลือ</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd">
+        <div>
+          <h2>ข่าวลือสถานะ PANIC</h2>
+          <div class="sub">ข่าวที่มีจำนวนรายงานมากกว่าเกณฑ์</div>
+        </div>
+        <span class="badge panic"><%= panic.length %> รายการ</span>
+      </div>
+      <div class="card-bd">
+        <% if (panic.length === 0) { %>
+          <div class="alert">ไม่มี</div>
+        <% } else { %>
+          <ul style="margin:0; padding-left:18px;">
+            <% panic.forEach(r => { %>
+              <li style="margin:8px 0;">
+                <a href="/rumours/<%= r.id %>"><b><%= r.rumour_code %></b></a> — <%= r.title %>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-hd">
+            <div>
+              <h2>ยืนยันว่า “จริง”</h2>
+              <div class="sub">verified_status = true</div>
+            </div>
+            <span class="badge true"><%= verifiedTrue.length %> รายการ</span>
+          </div>
+          <div class="card-bd">
+            <% if (verifiedTrue.length === 0) { %>
+              <div class="alert">ไม่มี</div>
+            <% } else { %>
+              <ul style="margin:0; padding-left:18px;">
+                <% verifiedTrue.forEach(r => { %>
+                  <li style="margin:8px 0;">
+                    <a href="/rumours/<%= r.id %>"><b><%= r.rumour_code %></b></a> — <%= r.title %>
+                  </li>
+                <% }) %>
+              </ul>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="card">
+          <div class="card-hd">
+            <div>
+              <h2>ยืนยันว่า “เท็จ”</h2>
+              <div class="sub">verified_status = false</div>
+            </div>
+            <span class="badge false"><%= verifiedFalse.length %> รายการ</span>
+          </div>
+          <div class="card-bd">
+            <% if (verifiedFalse.length === 0) { %>
+              <div class="alert">ไม่มี</div>
+            <% } else { %>
+              <ul style="margin:0; padding-left:18px;">
+                <% verifiedFalse.forEach(r => { %>
+                  <li style="margin:8px 0;">
+                    <a href="/rumours/<%= r.id %>"><b><%= r.rumour_code %></b></a> — <%= r.title %>
+                  </li>
+                <% }) %>
+              </ul>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      * หน้าสรุปนี้แยกตาม requirement (Panic / Verified True / Verified False)
+    </div>
+  </div>
+</body>
+</html>
